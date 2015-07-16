@@ -7,7 +7,7 @@
  */
 
 html {
-  font-family: sans-serif; /* 1 */
+  font-family: 'Microsoft YaHei','Helvetica Neue', Helvetica, Arial, sans-serif;; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */
   -ms-text-size-adjust: 100%; /* 2 */
 }
@@ -428,7 +428,7 @@ th {
 
 /* LAYOUT STYLES */
 body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, serif;
+  font-family: 'Microsoft YaHei','Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 15px;
   font-weight: 400;
   line-height: 1.5;
