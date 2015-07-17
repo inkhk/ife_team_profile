@@ -892,7 +892,7 @@ footer a:hover {
 /* add by michaeljunlove */
 .image_float{
       float:left;
-     
+      margin-right: 20px;
       border-radius: 50%;
       -webkit-box-shadow: rgb(255, 255, 255) 0px 0px 1px;
       box-shadow: rgb(255, 255, 255) 0px 0px 1px;
