@@ -18,6 +18,7 @@ var game = this.game || (this.game = {});
 
 	var startScene = game.startScene = Object.create(scene);
 	//TODO
+	
 
 	var gameOverScene = game.gameOverScene = Object.create(scene);
 	//TODO
