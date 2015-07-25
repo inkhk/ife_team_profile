@@ -231,6 +231,12 @@ var createjs = createjs || {};
 		game.stage.addEventListener('gameOverEvent', function(e){
 			cjs.Ticker.removeEventListener('tick', game.Tick);
 			console.log(e);
+            document.getElementById('canvas').style.display = 'none';
+            document.getElementById('gamebg').style.display = 'block';
+            document.getElementById('score-btn').style.display = 'block';
+            document.getElementById('score-btn').innerText = '得分: ' + e.score;
+            document.getElementById('start-btn').innerText = '再来一次';
+
 		})
 	}
 	//停止产生Diamond 
@@ -259,7 +265,6 @@ var createjs = createjs || {};
 			game.gameView.init();
             //对舞台的事件的监听以及猫位置的更新
 			game.touchEventMng.init();
-			
 		}
 		//进行加载资源
 		game.initLoader(handleComplete);
