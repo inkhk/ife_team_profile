@@ -28,10 +28,18 @@ var createjs = createjs || {};
 
 	(game.diamondBoard = function(){
 		cjs.Container.call(this);
+		//loader是加载资源的管理器，在game.js中的initLoader定义的，getResult是根据id值来获取的。
 		var background =  new cjs.Bitmap(game.loader.getResult("diamondsBoard"));
+		//设置background的X坐标
 		background.x = 0;
+		//设置background的y坐标
 		background.y = 0;
+<<<<<<< Updated upstream
 		var text = new cjs.Text("0", "20px Impact", "#000");
+=======
+		//创建一个text对象
+		var text = new createjs.Text("0", "20px Impact", "#000");
+>>>>>>> Stashed changes
 		text.textBaseline = 'middle';
 		text.x = background.getBounds().width / 2 + 25;
 		text.y = background.getBounds().height / 2;
@@ -41,6 +49,7 @@ var createjs = createjs || {};
 		this.addChild(text);
 		this.x = 10;
 		this.y = 10;
+<<<<<<< Updated upstream
 
 		this.addNumberText = function(){
 			text.text = parseInt(text.text) + 1;
@@ -98,8 +107,17 @@ var createjs = createjs || {};
 
 		}
 	}).prototype = Object.create(cjs.Container.prototype);
+=======
+        //更改text对象的显示的值
+		this.addNumberText = function(){
+			text.text = parseInt(text.text) + 1;
+		}
+>>>>>>> Stashed changes
 
+	}).prototype = Object.create(cjs.Container.prototype);
+    //生成猫
 	(game.cat = function(){
+<<<<<<< Updated upstream
 		cjs.Bitmap.call(this, game.loader.getResult("cat"));
 		//this.x = game.setting.gameWidth/2-this.getBounds().width*this.scaleX/2;
 		this.y = 0;
@@ -107,5 +125,15 @@ var createjs = createjs || {};
 		this.scaleY = 0.5;
 		this.x = game.setting.gameWidth/2-this.getBounds().width*this.scaleX/2;
 	}).prototype = Object.create(cjs.Bitmap.prototype);
+=======
+		cjs.Bitmap.call(this, game.loader.getResult("cat"));		
+		this.scaleX = 0.5;
+		this.scaleY = 0.5;
+		this.movespeed=10;
+		this.x = game.setting.gameWidth/2-this.getBounds().width*this.scaleX/2;
+		this.y = game.setting.gameHeight- this.getBounds().height*this.scaleX;
+>>>>>>> Stashed changes
 
+	}).prototype = Object.create(cjs.Bitmap.prototype);
+	
 }).call(this, game, createjs)
