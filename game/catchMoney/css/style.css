@@ -58,7 +58,6 @@ html,body {
     border-radius: 6px;
     border: 2px #7f7f7f solid;
     outline: none;
-    cursor: pointer;
     display: none;
     margin-bottom: 10px;
 }
