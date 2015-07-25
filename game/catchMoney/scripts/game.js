@@ -54,12 +54,8 @@ var createjs = createjs || {};
 }).call(this, game, createjs)
 
 //Tick
-<<<<<<< Updated upstream
 ;(function(cjs){
-=======
-;(function(){
 	//游戏的渲染主程序，是tick事件的回调函数，在第99行,传入的e代表是tick事件
->>>>>>> Stashed changes
 	game.Tick = function(e){
 		//更新舞台
 		game.stage.update();
@@ -67,7 +63,7 @@ var createjs = createjs || {};
 		if (!e.paused) {
 			//移动diamond，处理离开屏幕的移动diamond
 			game.gameView.moveObjects();
-<<<<<<< Updated upstream
+
 			if(game.gameView.diamondFactoryState){
 				game.gameView.timer.showTime(cjs.Ticker.getTime());
 			}
@@ -77,14 +73,7 @@ var createjs = createjs || {};
 				game.gameView.generateDiamond();
 			};
 			game.gameView.checkOnDiamonds();
-=======
-			//Returns the number of ticks that have been broadcast by Ticker.
-			var ticksCount = createjs.Ticker.getTicks(true);
-
-			if (ticksCount % game.setting.ticksPerNewDiamond === 0) {
-				//生成新的diamond
-				game.gameView.generateDiamond();
-			};
+			
 			//遍历diamondsRepositories，进行碰撞检测的判断,这块代码michael,写的，本人michael深知写的很渣，很丑
 			for(var i=0; i<game.gameView.diamondsRepositories.length; i++){
 				//
@@ -122,7 +111,6 @@ var createjs = createjs || {};
                     game.gameView.countBoard.addNumberText();
 				}
 			}
->>>>>>> Stashed changes
 		};
 	}
 }).call(this, createjs);
@@ -134,13 +122,8 @@ var createjs = createjs || {};
 		countBoard: {},
 		//diamonds仓库
 		diamondsRepositories: [],
-<<<<<<< Updated upstream
 		diamondFactoryState: true,
 		generateDiamond: function(){
-=======
-		//生成Diamond
-		generateDiamond: function(){			
->>>>>>> Stashed changes
 			diamond = new game.diamond();
 			diamond.y = - game.setting.diamondWidth;
 			diamond.x = Math.random() * (game.setting.gameWidth - game.setting.diamondWidth);
@@ -151,9 +134,18 @@ var createjs = createjs || {};
 		init: function(){
 			//生成计数板，放入stage
 			this.putOnCountBoard();
-<<<<<<< Updated upstream
+			//放入计时器
 			this.putOnTimerBoard();
+			//生成Diamond，放入stage
 			this.generateDiamond();
+			//生成猫，放入stage
+			this.putOnCat();
+			//为了在 stage 上使用鼠标事件,对stage添加touch事件
+            createjs.Touch.enable(game.stage);
+            // enabled mouse over / out events，// 10 updates per second,这个操作的开销很大，所以它默认是被关闭的。
+		    game.stage.enableMouseOver(10);
+		    // keep tracking the mouse even when it leaves the canvas
+		    game.stage.mouseMoveOutside = true; 
 			cjs.Ticker.setFPS(40);
 			cjs.Ticker.addEventListener('tick', game.Tick);
 		},
@@ -161,21 +153,8 @@ var createjs = createjs || {};
 			game.stage.removeAllChildren();
 			this.diamondFactoryState = true;
 			this.init();
-=======
-			//生成猫，放入stage
-			this.putOnCat();
-            //生成Diamond，放入stage
-			this.generateDiamond();
-			//为了在 stage 上使用鼠标事件,对stage添加touch事件
-            createjs.Touch.enable(game.stage);
-            // enabled mouse over / out events，// 10 updates per second,这个操作的开销很大，所以它默认是被关闭的。
-		    game.stage.enableMouseOver(10);
-		    // keep tracking the mouse even when it leaves the canvas
-		    game.stage.mouseMoveOutside = true; 
-		    //设置帧率
-			createjs.Ticker.setFPS(40);
-			createjs.Ticker.addEventListener('tick', game.Tick);
->>>>>>> Stashed changes
+			
+   
 		},
 		//移动diamond，处理离开屏幕的移动diamond
 		moveObjects: function(){
@@ -203,25 +182,21 @@ var createjs = createjs || {};
 				};
 			}
 		},
-<<<<<<< Updated upstream
+
 		checkOnDiamonds: function(){
 			if (this.diamondsRepositories.length === 0) {
 				game.stage.dispatchEvent(new game.helper.gameOverEvent(10));
 			};
 		},
-=======
 		//生成计数板，放入stage
->>>>>>> Stashed changes
 		putOnCountBoard: function(){
 			//diamondBoard函数在view-sprites.js中
 			this.countBoard = new game.diamondBoard();
-<<<<<<< Updated upstream
 			game.stage.addChild(this.countBoard);
 		},
 		putOnTimerBoard: function(){
 			this.timer = new game.clock();
 			game.stage.addChild(this.timer);
-=======
 			//放入舞台
 			game.stage.addChild(this.countBoard);
 		},
@@ -231,7 +206,6 @@ var createjs = createjs || {};
 			this.cat = new game.cat();
 			//放入舞台
 			game.stage.addChild(this.cat);
->>>>>>> Stashed changes
 		}
 	}
     //加载资源
@@ -252,13 +226,14 @@ var createjs = createjs || {};
 		game.loader.loadManifest(manifest, true, "imgs/");
 
 	}
-
+    //游戏结束事件
 	game.initGameOver = function(){
 		game.stage.addEventListener('gameOverEvent', function(e){
 			cjs.Ticker.removeEventListener('tick', game.Tick);
 			console.log(e);
 		})
 	}
+	//停止产生Diamond 
 	game.initStopGenerateDiamond = function(){
 		game.stage.addEventListener('stopGenerateDiamondEvent', function(e){
 			console.log('stop');
@@ -276,19 +251,11 @@ var createjs = createjs || {};
 		game.stage = new cjs.Stage(game.canvas);
         //资源加载完成后的回调函数
 		var handleComplete = function(){
-<<<<<<< Updated upstream
-			//cat = new game.cat();
-			//diamond = new game.diamond();
-			//diamond.y = 200;
-			//game.stage.addChild(cat);
-			//game.stage.addChild(diamond);
-
-			//game.
+			//初始化游戏结束事件
 			game.initGameOver();
+			//停止产生Diamond
 			game.initStopGenerateDiamond();
-=======
 			//资源加载完成后，调用init函数
->>>>>>> Stashed changes
 			game.gameView.init();
             //对舞台的事件的监听以及猫位置的更新
 			game.touchEventMng.init();
