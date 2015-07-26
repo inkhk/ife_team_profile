@@ -18,5 +18,5 @@ var createjs = createjs || {};
 			score: score
 		});
 	}).prototype = Object.create(cjs.Event.prototype);
-
+    
 }).call(this, game, createjs);
