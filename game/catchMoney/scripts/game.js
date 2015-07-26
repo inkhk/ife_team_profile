@@ -4,6 +4,7 @@ var game = this.game || (this.game ={});
 var createjs = createjs || {};
 
 ;(function(game){
+
 	//获得id=canvas的节点
 	game.canvas = document.getElementById('canvas');
 	//适配移动端，使得画布的大小和移动设备一样大小
@@ -20,7 +21,9 @@ var createjs = createjs || {};
 		fallingSpeed: 5,
 		//diamond宽度
 		diamondWidth: 90,
-		gameTimeout: 2
+		//计时器的时间,现在时设置为30秒钟
+		gameTimeout: 30,
+		lastTime: 0
 	}
 	//传入window作用域中的game对象作为参数
 }).call(this, game);
@@ -36,18 +39,36 @@ var createjs = createjs || {};
 				x: e.localX,
 				y: e.localY
 			}
+			console.log(mousedown);
 			//hasActiveTweens用来判断是否在运动
 			if (cjs.Tween.hasActiveTweens(game.gameView.cat)) {
+				console.log('hastweens');
 				//如果不运动了，移除所有的Tweens
 				cjs.Tween.removeAllTweens();
 			};
 			//更新猫的位置
-			cjs.Tween.get(game.gameView.cat).to(mousedown, 1000);
+			console.log(game.gameView.cat);
+			cjs.Tween.get(game.gameView.cat).to(mousedown, (function(){
+				//起点到终点的直线距离
+				var _x=Math.abs(game.gameView.cat.x-mousedown.x);
+				var _y=Math.abs(game.gameView.cat.y-mousedown.y);
+				var distance=Math.sqrt(_x*_x+_y*_y);
+				var time=(distance/game.gameView.cat.movespeed)*1000;
+				console.log(time);
+				return time;
+			})());
 		}
 		return {
 			//初始化对舞台的监听
 			init: function(){
-				game.stage.addEventListener('stagemousedown', mousedownHandler)
+				if (!game.stage.hasEventListener('stagemousedown')) {
+					console.log('noHandler');
+					game.stage.addEventListener('stagemousedown', mousedownHandler);
+				};
+			},
+			reset: function(){
+				cjs.Tween.removeAllTweens();
+				game.stage.removeEventListener('stagemousedown', mousedownHandler);
 			}
 		}
 	}();
@@ -65,7 +86,7 @@ var createjs = createjs || {};
 			game.gameView.moveObjects();
 
 			if(game.gameView.diamondFactoryState){
-				game.gameView.timer.showTime(cjs.Ticker.getTime());
+				game.gameView.timer.showTime(cjs.Ticker.getTime() - game.setting.lastTime);
 			}
 
 			var ticksCount = createjs.Ticker.getTicks(true);
@@ -132,6 +153,7 @@ var createjs = createjs || {};
 		},
 		//游戏初始化
 		init: function(){
+
 			//生成计数板，放入stage
 			this.putOnCountBoard();
 			//放入计时器
@@ -145,16 +167,19 @@ var createjs = createjs || {};
             // enabled mouse over / out events，// 10 updates per second,这个操作的开销很大，所以它默认是被关闭的。
 		    game.stage.enableMouseOver(10);
 		    // keep tracking the mouse even when it leaves the canvas
+
 		    game.stage.mouseMoveOutside = true; 
+
+		    game.setting.lastTime = cjs.Ticker.getTime();
 			cjs.Ticker.setFPS(40);
 			cjs.Ticker.addEventListener('tick', game.Tick);
+
 		},
 		reset: function(){
 			game.stage.removeAllChildren();
 			this.diamondFactoryState = true;
+			this.diamondsRepositories = [];
 			this.init();
-			
-   
 		},
 		//移动diamond，处理离开屏幕的移动diamond
 		moveObjects: function(){
@@ -229,12 +254,16 @@ var createjs = createjs || {};
     //游戏结束事件
 	game.initGameOver = function(){
 		game.stage.addEventListener('gameOverEvent', function(e){
+			console.log('game over');
 			cjs.Ticker.removeEventListener('tick', game.Tick);
-			console.log(e);
-            document.getElementById('canvas').style.display = 'none';
+		
+			
+			console.log(game.setting.lastTime)
+			game.touchEventMng.reset();
+			document.getElementById('canvas').style.display = 'none';
             document.getElementById('gamebg').style.display = 'block';
             document.getElementById('score-btn').style.display = 'block';
-            document.getElementById('score-btn').innerText = '得分: ' + e.score;
+            document.getElementById('score-btn').innerText = '得分: ' + game.gameView.countBoard.getNumberText();
             document.getElementById('start-btn').innerText = '再来一次';
 
 		})
@@ -257,14 +286,16 @@ var createjs = createjs || {};
 		game.stage = new cjs.Stage(game.canvas);
         //资源加载完成后的回调函数
 		var handleComplete = function(){
+			console.log('handleComplete');
 			//初始化游戏结束事件
 			game.initGameOver();
 			//停止产生Diamond
 			game.initStopGenerateDiamond();
 			//资源加载完成后，调用init函数
-			game.gameView.init();
+			game.gameView.reset();
             //对舞台的事件的监听以及猫位置的更新
 			game.touchEventMng.init();
+
 		}
 		//进行加载资源
 		game.initLoader(handleComplete);
@@ -274,12 +305,12 @@ var createjs = createjs || {};
 
 
 //游戏入口
-;(function(game){
-	//判断全局的game对象是否存在
-	if (game) {
-		//调用start方法开始
-		game.start();
-	}else{
-		throw "No game logic found.";
-	}
-}).call(this, game);
+// ;(function(game){
+// 	//判断全局的game对象是否存在
+// 	if (game) {
+// 		//调用start方法开始
+// 		game.start();
+// 	}else{
+// 		throw "No game logic found.";
+// 	}
+// }).call(this, game);
