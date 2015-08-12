@@ -15,6 +15,7 @@ var createjs = createjs || {};
 		bulletVelocity: 100,
 		bulletFrequency: 20,
 		bulletPower: 1,
+		initialBulletSpan: 20,
 
 		enemyType: 3,
 		enemy1Frequency: 50,
@@ -175,30 +176,64 @@ var createjs = createjs || {};
 		}
 	}
 
-
 	game.heroCraft = {
 		heroBullets:[],
 		handleX: 0,
+		bulletType: '',
+		levelNow: 0,
+		allLevels: [],
 		init: function(){
+			for (var mode in game.ammunition){
+				this.allLevels.push(game.ammunition[mode].type);
+			}
+			this.bulletType = this.allLevels[0];
 			game.craft = new game.airCraft();
 			game.craft.y = game.setting.gameHeight - 100;
 			game.craft.x = (game.setting.gameWidth - game.craft.getBounds().width * game.craft.scaleX)/2 
 			game.stage.addChild(game.craft);
 		},
 		generateHeroBullet: function(){
-			var bullet = new game.heroBullet();
+			var weapon = game.ammunition[this.bulletType],
+				weaponWidth = weapon.bullet[0].length,
+				weaponSpan = game.setting.initialBulletSpan * (weaponWidth - 1),
+				weaponHeight = weapon.bullet.length,
+				craftCenter = game.craft.x + game.craft.getBounds().width * game.craft.scaleX/2,
+				intialX = craftCenter - weaponSpan / 2;
+
+			for (var row = 0; row < weaponHeight; row++) {
+				for (var col = 0; col < weaponWidth; col++) {
+					if (weapon.bullet[row][col] == 1) {
+						var bullet = new game.heroBullet();
+						bullet.x = intialX +  game.setting.initialBulletSpan * col - bullet.getBounds().width * bullet.scaleX/ 2;
+						bullet.y = game.craft.y - bullet.getBounds().height * bullet.scaleY;
+						bullet.rotation = weapon.direction[row][col];
+						game.stage.addChild(bullet);
+						this.heroBullets.push(bullet);
+					};
+				};
+			};
+
+			/*var bullet = new game.heroBullet();
 			bullet.x = game.craft.x
 					 + (game.craft.getBounds().width * game.craft.scaleX
 					 - 2)/2;
 
 			bullet.y = game.craft.y - bullet.getBounds().height * bullet.scaleY;
 			game.stage.addChild(bullet);
-			this.heroBullets.push(bullet);
+			this.heroBullets.push(bullet);*/
+		},
+
+		levelUp: function(){
+			console.log('levelUp')
+			if (this.levelNow < this.allLevels.length-1) {
+				this.levelNow++;
+				this.bulletType = this.allLevels[this.levelNow];
+			};
 		},
 		BulletStillFlying: function(idx){
 			//如果超过边界了
 			var bullet = this.heroBullets[idx];
-			if(bullet.y <= -bullet.getBounds().height * bullet.scaleY){
+			if(bullet.y <= -bullet.getBounds().height * bullet.scaleY || bullet.x >= game.setting.gameWidth ||  bullet.x <= -bullet.getBounds().width * bullet.scaleX){
 				this.destroyBullet(idx)
 				return false;
 			}
@@ -230,6 +265,7 @@ var createjs = createjs || {};
 				for(i = 0; i < len; i++){
 					if(this.BulletStillFlying(i)){
 						this.heroBullets[i].y = this.heroBullets[i].y - deltaS * game.setting.bulletVelocity;
+						this.heroBullets[i].x = this.heroBullets[i].x + deltaS * Math.tan(this.heroBullets[i].rotation / 180 * Math.PI) * game.setting.bulletVelocity;
 					}else{
 						len --;
 					}
@@ -357,7 +393,6 @@ var createjs = createjs || {};
 		destroySupply: function(idx){
 			if (game.stage.removeChild(this.supplyRepository[idx])) {
 				this.supplyRepository.splice(idx ,1);
-				game.bombBoardObj.addBomb();
 			}	
 		},
 		tick: function(event){
@@ -423,7 +458,13 @@ var createjs = createjs || {};
 				for (j = 0, lenS = supplyRepository.length; j < lenS; j++) {
 					//hero和补给
 					if (game.helper.detectCollision(supplyRepository[j], heroCraft)) {
-						console.log('hero get supply')
+						console.log('hero get supply' + supplyRepository[j].supplyType);
+						if (supplyRepository[j].supplyType == 2) {
+							game.bombBoardObj.addBomb();
+						}else{
+
+							game.heroCraft.levelUp()
+						}
 						game.supplyCraft.destroySupply(j);
 						lenS--;
 						//加导弹
