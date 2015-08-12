@@ -21,9 +21,13 @@ var createjs = createjs || {};
 		fallingSpeed: 5,
 		//diamond宽度
 		diamondWidth: 90,
+<<<<<<< Updated upstream
 		//计时器的时间,现在时设置为30秒钟
 		gameTimeout: 30,
 		lastTime: 0
+=======
+		gameTimeout: 5
+>>>>>>> Stashed changes
 	}
 	//传入window作用域中的game对象作为参数
 }).call(this, game);
@@ -210,7 +214,7 @@ var createjs = createjs || {};
 
 		checkOnDiamonds: function(){
 			if (this.diamondsRepositories.length === 0) {
-				game.stage.dispatchEvent(new game.helper.gameOverEvent(10));
+				game.stage.dispatchEvent(new game.helper.gameOverEvent(game.gameView.countBoard.getNumber()));
 			};
 		},
 		//生成计数板，放入stage
@@ -307,7 +311,7 @@ var createjs = createjs || {};
 //游戏入口
 // ;(function(game){
 // 	//判断全局的game对象是否存在
-// 	if (game) {
+// 	if (game) {i
 // 		//调用start方法开始
 // 		game.start();
 // 	}else{

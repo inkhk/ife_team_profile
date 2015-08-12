@@ -19,9 +19,22 @@ function hengshuping(event){
   if(window.orientation==90||window.orientation==-90){
   	   //alert("横屏状态！");
 
+<<<<<<< Updated upstream
   	   //跟新游戏的宽度和高度
   	   game.setting.gameWidth=window.innerWidth;
   	   game.setting.gameHeight=window.innerHeight;
   	   game.helper.resizeCanvas();
     }
  }
+=======
+	var startScene = game.startScene = Object.create(scene);
+	startScene.node = document.querySelector('.startScene');
+	startScene.setup = function(){
+		
+	}
+	
+
+	var gameOverScene = game.gameOverScene = Object.create(scene);
+	//TODO
+})
+>>>>>>> Stashed changes

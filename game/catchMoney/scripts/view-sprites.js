@@ -48,9 +48,16 @@ var createjs = createjs || {};
 		this.addNumberText = function(){
 			text.text = parseInt(text.text) + 1;
 		}
+<<<<<<< Updated upstream
 		this.getNumberText = function(){
 			return parseInt(text.text);
 		}
+=======
+		this.getNumber = function(){
+			return text.text;
+		}
+
+>>>>>>> Stashed changes
 	}).prototype = Object.create(cjs.Container.prototype);
 
 	(game.clock = function(){
