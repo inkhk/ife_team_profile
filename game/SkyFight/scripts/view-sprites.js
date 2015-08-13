@@ -130,6 +130,9 @@ var createjs = createjs || {};
 		this.resume = function(){
 			background.image = game.loader.getResult("pause");
 		}
+		this.getScore = function(){
+			return this.score;
+		}
 	}).prototype = Object.create(cjs.Container.prototype);
 
 	(game.bombBoard = function(){
