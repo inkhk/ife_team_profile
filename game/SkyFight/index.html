@@ -8,9 +8,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
+    <div id='gamebg'>
+        <img src="imgs/shoot_background/background.png">
+        <div id = 'btn-wrap'>
+          <div id="startButton">开始游戏</div>
+          <div id="infoButton">游戏说明</div>
+          <div id="setButton">游戏设置</div>
+        </div>
+    </div>
+    <div id='gameover'>
+    	<img src="imgs/shoot_background/gameover.png">
+    	<div id = 'btn-wrap'>
+          <div id="score"></div>
+          <div id="startButton">返回首页</div>
+          
+        </div>
+    	
+
+    </div>
 	<canvas id='canvas'>
 
 	</canvas>
+	
 	<script src="vendors/easeljs-0.8.1.min.js"></script>
     <script src="vendors/tweenjs-0.6.1.min.js"></script>
     <script src="vendors/preloadjs-0.6.1.min.js"></script>

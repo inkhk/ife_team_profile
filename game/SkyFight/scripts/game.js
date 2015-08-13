@@ -4,6 +4,8 @@ var createjs = createjs || {};
 ;(function(game){
 	game.canvas = document.getElementById('canvas');
 	game.helper.resizeCanvas();
+	//记录按键的状态
+	game.keys={};
 	game.setting = {
 		gameWidth: game.canvas.width,
 		gameHeight: game.canvas.height,
@@ -39,6 +41,8 @@ var createjs = createjs || {};
 
 		supply2Frequency: 800,
 		supply2Velocity: 30,
+         
+        KEY_CODES :{ 37:'left', 39:'right',32:'bomb'},
 
 	}
 }).call(this, game);
@@ -79,6 +83,35 @@ var createjs = createjs || {};
 			this.initDiviceOrientationEvent();
 			this.initBombClickEvent();
 			this.initPauseClickEvent();
+			this.initKeyEvent();
+		},
+		initKeyEvent:function(){
+             window.addEventListener('keydown',function(event) {
+             	console.log(event.keyCode);
+             	if(game.setting.KEY_CODES[event.keyCode]){
+             		game.keys[game.setting.KEY_CODES[event.keyCode]] = true;
+                   if(game.keys['left']){
+                     game.heroCraft.handleX = -game.setting.heroVelocity;
+                   }else if(game.keys['right']){
+                     game.heroCraft.handleX = game.setting.heroVelocity;
+                   }else if(game.keys['bomb']){
+                     game.eventHandler.bombClickEventHandler();
+                   }
+             	}
+                
+             	
+                event.preventDefault();
+              },false);
+
+             window.addEventListener('keyup',function(event) {
+              if(game.setting.KEY_CODES[event.keyCode]){
+                 game.keys[game.setting.KEY_CODES[event.keyCode]] = false;
+                 game.heroCraft.handleX = 0;
+               }
+                 event.preventDefault();
+              
+             },false);
+
 		},
 		initDiviceOrientationEvent: function(){
 			window.addEventListener("deviceorientation", this.diviceOrientationEventHandler, true);
@@ -252,7 +285,12 @@ var createjs = createjs || {};
 			var sprite = game.craft.getChildAt(0);
 			sprite.addEventListener('animationend', function(event){
 				if (event.name === 'destroy') {
-					
+					    document.getElementById('gamebg').style.display = 'none';
+                        document.getElementById('canvas').style.display = 'none';
+                        document.getElementById('gameover').style.display = 'block';
+
+                        document.getElementById('score').innerText = game.scoreBoardObj.getScore();
+
 						//游戏结束逻辑	
 						console.log('gameOver')
 					
@@ -523,10 +561,20 @@ var createjs = createjs || {};
 	}
 }).call(this, game, createjs);
 
-;(function(game){
-	if (game){
-		game.start();
-	}else{
-		throw "No logic Found";
-	}
-}).call(this, game)
+
+window.onload=function(){
+	        var startbutton = document.getElementById('startButton');
+            startbutton.onclick = function(e) {
+                document.getElementById('gamebg').style.display = 'none';
+                document.getElementById('canvas').style.display = 'block';
+                game.start();
+            }
+}
+// ;(function(game){
+// 	if (game){
+	
+// 		game.start();
+// 	}else{
+// 		throw "No logic Found";
+// 	}
+// }).call(this, game)
