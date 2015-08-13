@@ -180,13 +180,15 @@ var createjs = createjs || {};
 		heroBullets:[],
 		handleX: 0,
 		bulletType: '',
+		bulletDepthCounts: 0,
 		levelNow: 0,
 		allLevels: [],
 		init: function(){
 			for (var mode in game.ammunition){
 				this.allLevels.push(game.ammunition[mode].type);
 			}
-			this.bulletType = this.allLevels[0];
+			this.bulletType = this.allLevels[this.levelNow];
+			console.log(this.bulletType)
 			game.craft = new game.airCraft();
 			game.craft.y = game.setting.gameHeight - 100;
 			game.craft.x = (game.setting.gameWidth - game.craft.getBounds().width * game.craft.scaleX)/2 
@@ -198,9 +200,10 @@ var createjs = createjs || {};
 				weaponSpan = game.setting.initialBulletSpan * (weaponWidth - 1),
 				weaponHeight = weapon.bullet.length,
 				craftCenter = game.craft.x + game.craft.getBounds().width * game.craft.scaleX/2,
-				intialX = craftCenter - weaponSpan / 2;
+				intialX = craftCenter - weaponSpan / 2,
+				row = this.bulletDepthCounts % weaponHeight;
 
-			for (var row = 0; row < weaponHeight; row++) {
+			//for (var row = 0; row < weaponHeight; row++) {
 				for (var col = 0; col < weaponWidth; col++) {
 					if (weapon.bullet[row][col] == 1) {
 						var bullet = new game.heroBullet();
@@ -211,7 +214,9 @@ var createjs = createjs || {};
 						this.heroBullets.push(bullet);
 					};
 				};
-			};
+
+				this.bulletDepthCounts ++;
+			//};
 
 			/*var bullet = new game.heroBullet();
 			bullet.x = game.craft.x
@@ -222,7 +227,6 @@ var createjs = createjs || {};
 			game.stage.addChild(bullet);
 			this.heroBullets.push(bullet);*/
 		},
-
 		levelUp: function(){
 			console.log('levelUp')
 			if (this.levelNow < this.allLevels.length-1) {

@@ -29,7 +29,19 @@ var createjs = createjs || {};
 			type: 'triple',
 			bulletArr: [[1, 1, 1]],
 			bulletDirect: [[-20, 0, 20]]
-		})
-
+		}),
+		diamond: game.bulletModel({
+			type: 'diamond',
+			bulletArr: [[0, 0, 1, 0, 0],
+						[0, 1, 1, 1, 0],
+						[1, 1, 1, 1, 1],
+						[0, 1, 1, 1, 0],
+						[0, 0, 1, 0, 0],],
+			bulletDirect: [[0, 0, 0, 0, 0],
+						   [0, 0, 0, 0, 0],
+						   [0, 0, 0, 0, 0],
+					       [0, 0, 0, 0, 0],
+						   [0, 0, 0, 0, 0],]
+		}),
 	}
 }).call(this, game, createjs);
