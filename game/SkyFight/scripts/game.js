@@ -42,7 +42,7 @@ var createjs = createjs || {};
 		supply2Frequency: 800,
 		supply2Velocity: 30,
          
-        KEY_CODES :{ 37:'left', 39:'right',32:'bomb'},
+        KEY_CODES :{ 37:'left', 39:'right',32:'bomb',27:'suspend'},
 
 	}
 }).call(this, game);
@@ -96,6 +96,8 @@ var createjs = createjs || {};
                      game.heroCraft.handleX = game.setting.heroVelocity;
                    }else if(game.keys['bomb']){
                      game.eventHandler.bombClickEventHandler();
+                   }else if(game.keys['suspend']){
+                   	 game.eventHandler.pauseClickEventHandler();
                    }
              	}
                 
