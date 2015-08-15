@@ -6,13 +6,17 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div id='gamebg'>
         <img src="imgs/shoot_background/background.png">
         <div id = 'btn-wrap'>
           <div id="startButton">开始游戏</div>
-          <div id="infoButton">游戏说明</div>
+          <div id="infoButton" class="btn btn-primary btn-lg" data-toggle="modal" 
+   data-target="#myModal">游戏说明</div>
           <div id="setButton">游戏设置</div>
         </div>
     </div>
@@ -20,7 +24,7 @@
     	<img src="imgs/shoot_background/gameover.png">
     	<div id = 'btn-wrap'>
           <div id="score"></div>
-          <div id="startButton">返回首页</div>
+          <div id="startButton">再玩一次</div>
           
         </div>
     	
@@ -29,7 +33,38 @@
 	<canvas id='canvas'>
 
 	</canvas>
-	
+
+
+<!--游戏说明 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+   aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="myModalLabel">
+              游戏说明
+            </h4>
+         </div>
+         <div class="modal-body">
+            玩家可以在PC上或者移动终端中玩本游戏，使用说明如下:
+            <br/>
+            1.在PC上，玩家可以通过左箭头和右箭头来来回移动，空格键可以放炸弹。esc键暂停本游戏
+            <br/>
+            2.在移动终端，本游戏实现重力感应来控制飞机的移动。
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" 
+               data-dismiss="modal">关闭
+            </button>
+           
+         </div>
+      </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+</div>
 	<script src="vendors/easeljs-0.8.1.min.js"></script>
     <script src="vendors/tweenjs-0.6.1.min.js"></script>
     <script src="vendors/preloadjs-0.6.1.min.js"></script>
